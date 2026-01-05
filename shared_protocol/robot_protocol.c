@@ -28,7 +28,7 @@ robot_channel_t robot_channel_from_type(uint8_t type)
     {
         return ROBOT_CHANNEL_CMD;
     }
-    if (type == ROBOT_MSG_TELEM_FRAME)
+    if (type == ROBOT_MSG_TELEM_FRAME || type == ROBOT_MSG_TELEM_FRAME_V2)
     {
         return ROBOT_CHANNEL_TELEM;
     }

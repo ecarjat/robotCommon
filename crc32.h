@@ -4,6 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-uint32_t robot_crc32(const uint8_t *data, size_t length, uint32_t seed);
+uint32_t robot_crc32(const uint8_t *data, size_t length);
 
 #endif /* ROBOT_CRC32_H */

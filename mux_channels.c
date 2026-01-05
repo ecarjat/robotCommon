@@ -10,7 +10,7 @@ void robot_mux_init(robot_mux_t *mux)
     }
 }
 
-bool robot_mux_register(robot_mux_t *mux, uint8_t channel, robot_mux_handler_t handler, void *ctx)
+bool robot_mux_register(robot_mux_t *mux, robot_channel_t channel, robot_mux_handler_t handler, void *ctx)
 {
     if (mux == NULL || handler == NULL)
     {
@@ -27,9 +27,15 @@ bool robot_mux_register(robot_mux_t *mux, uint8_t channel, robot_mux_handler_t h
     return true;
 }
 
-void robot_mux_dispatch(robot_mux_t *mux, uint8_t channel, uint8_t msg_type, const uint8_t *payload, size_t payload_len)
+void robot_mux_dispatch(robot_mux_t *mux, uint8_t msg_type, const uint8_t *payload, size_t payload_len)
 {
-    if (mux == NULL || channel == 0U || channel > ROBOT_CHANNEL_MAX)
+    if (mux == NULL)
+    {
+        return;
+    }
+
+    robot_channel_t channel = robot_channel_from_type(msg_type);
+    if (channel == 0U || channel > ROBOT_CHANNEL_MAX)
     {
         return;
     }

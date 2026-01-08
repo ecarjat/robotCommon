@@ -69,6 +69,7 @@ typedef enum
 #define ROBOT_STATUS_ESTOP   ROBOT_TELEOP_FLAG_ESTOP
 #define ROBOT_STATUS_FAULT   0x04U
 #define ROBOT_STATUS_LINK_OK 0x08U
+#define ROBOT_STATUS_IMU_CAL 0x10U
 
 #define ROBOT_FAULT_KILL_ANGLE    0x0001U
 #define ROBOT_FAULT_IMU_TIMEOUT   0x0002U
@@ -179,6 +180,9 @@ typedef struct
     /* Motor link diagnostics */
     uint32_t motor_left_ack_timeouts;
     uint32_t motor_right_ack_timeouts;
+
+    /* ADC voltage (PC4) */
+    float    adc_voltage; /* Voltage reading from ADC1 CH4 (PC4) with multiplier applied */
 } robot_telem_v2_t;
 
 typedef struct

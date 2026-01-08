@@ -24,7 +24,7 @@ static bool validate_header(const robot_frame_header_t *hdr)
 
 robot_channel_t robot_channel_from_type(uint8_t type)
 {
-    if (type >= ROBOT_MSG_CMD_TELEOP && type <= ROBOT_MSG_CMD_HEARTBEAT)
+    if (type >= ROBOT_MSG_CMD_TELEOP && type <= ROBOT_MSG_CMD_REBOOT)
     {
         return ROBOT_CHANNEL_CMD;
     }

@@ -224,6 +224,55 @@ typedef struct
     uint8_t _reserved;
     float intensity;    /* [-1..1] normalized, scaled by IqMax */
 } robot_rpc_motor_run_t;
+
+/* File transfer protocol structures */
+#define ROBOT_FILE_MAX_FILENAME 64U
+#define ROBOT_FILE_CHUNK_SIZE   200U  /* Max chunk per frame (fits in 240B payload) */
+
+typedef struct
+{
+    uint8_t _reserved;  /* Future: flags or path filtering */
+} robot_file_list_req_t;
+
+typedef struct
+{
+    char    filename[ROBOT_FILE_MAX_FILENAME];
+    uint32_t size;      /* File size in bytes */
+} robot_file_entry_t;
+
+typedef struct
+{
+    uint8_t count;      /* Number of file entries in this response */
+    uint8_t more;       /* 1 if more files exist (for pagination) */
+} robot_file_list_resp_hdr_t;
+/* Followed by robot_file_entry_t[count] */
+
+typedef struct
+{
+    char     filename[ROBOT_FILE_MAX_FILENAME];
+    uint32_t offset;    /* Byte offset to read from */
+    uint16_t length;    /* Bytes to read (max ROBOT_FILE_CHUNK_SIZE) */
+} robot_file_read_req_t;
+
+typedef struct
+{
+    uint32_t offset;      /* Offset of this chunk */
+    uint32_t total_size;  /* Total file size */
+    uint16_t chunk_len;   /* Length of data in this response */
+} robot_file_read_resp_t;
+/* Followed by chunk_len bytes of file data */
+
+typedef struct
+{
+    uint8_t error_code;  /* 1=not_found, 2=read_error, 3=busy, 4=invalid_offset */
+    char    filename[ROBOT_FILE_MAX_FILENAME];
+} robot_file_err_t;
+
+#define ROBOT_FILE_ERR_NOT_FOUND    1U
+#define ROBOT_FILE_ERR_READ_ERROR   2U
+#define ROBOT_FILE_ERR_BUSY         3U
+#define ROBOT_FILE_ERR_INVALID_REQ  4U
+
 #pragma pack(pop)
 
 robot_channel_t robot_channel_from_type(uint8_t type);

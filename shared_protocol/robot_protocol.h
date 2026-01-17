@@ -61,13 +61,18 @@ typedef enum
 
 #define ROBOT_RPC_FLAG_SAVE        0x01U
 
-#define ROBOT_TELEOP_FLAG_ARM        0x01U
-#define ROBOT_TELEOP_FLAG_ESTOP      0x02U
-#define ROBOT_TELEOP_FLAG_MODE_CYCLE 0x04U
-#define ROBOT_TELEOP_FLAG_DUMP       0x08U  /* Trigger blackbox dump */
+/* Teleop command flags
+ * Edge-triggered (rising edge): ARM, MODE_CYCLE, DUMP
+ * Level-sensitive (held state): ESTOP, LQR_MODE
+ */
+#define ROBOT_TELEOP_FLAG_ARM        0x01U  /* Rising edge: attempt arm */
+#define ROBOT_TELEOP_FLAG_ESTOP      0x02U  /* Level: disarm while set */
+#define ROBOT_TELEOP_FLAG_MODE_CYCLE 0x04U  /* Rising edge: cycle motion mode */
+#define ROBOT_TELEOP_FLAG_DUMP       0x08U  /* Rising edge: trigger blackbox dump */
+#define ROBOT_TELEOP_FLAG_LQR_MODE   0x10U  /* Level: 0=PID, 1=LQR inner loop */
 
-#define ROBOT_STATUS_ARMED   ROBOT_TELEOP_FLAG_ARM
-#define ROBOT_STATUS_ESTOP   ROBOT_TELEOP_FLAG_ESTOP
+#define ROBOT_STATUS_ARMED   0x01U
+#define ROBOT_STATUS_ESTOP   0x02U
 #define ROBOT_STATUS_FAULT   0x04U
 #define ROBOT_STATUS_LINK_OK 0x08U
 #define ROBOT_STATUS_IMU_CAL 0x10U
